@@ -430,7 +430,6 @@ var multiply = function(num1, num2) {
         }
         if(flag > 0)
             ans = flag + ans;
-            console.log('add', ans);
         return ans;
     }
     function mult(a, b, n) {
@@ -560,4 +559,103 @@ var postorderTraversal = function(root) {
     dfs(root);
 ;   return ans;
 };
+```
+#### 前缀树
+```javascript
+/**
+ * Initialize your data structure here.
+ */
+var Trie = function() {
+    function Node(val) {
+        this._nodes = [];
+        this._value = val;
+        this._flag = false;
+    }
+    this._root = new Node();
+};
+Trie.createNew = function() {
+    return new Trie();
+}
+/**
+ * Inserts a word into the trie. 
+ * @param {string} word
+ * @return {void}
+ */
+Trie.prototype.insert = function(word) {
+    var _t = this._root;
+    var flag = false;
+    if(word.length < 0) return;
+    for(var i = 0; i < word.length; i++) {
+        flag = false;
+        for(var j = 0; j < _t._nodes.length; j++) {
+            if(_t._nodes[j]._value === word[i]) {
+                _t = _t._nodes[j];
+                flag = true;
+                break;
+            }
+        }
+        if(!flag) {
+            var f = new this._root.constructor(word[i]);
+            _t._nodes.push(f);
+            _t = f;
+        }
+    }
+    _t._flag = true;
+};
+
+/**
+ * Returns if the word is in the trie. 
+ * @param {string} word
+ * @return {boolean}
+ */
+Trie.prototype.search = function(word) {
+    var _t = this._root;
+    var flag = false;
+    for(var i = 0; i < word.length; i++) {
+        flag = false;
+        for(var j = 0; j < _t._nodes.length; j++) {
+            if(_t._nodes[j]._value === word[i]) {
+                _t = _t._nodes[j];
+                flag = true;
+                break;
+            }
+        }
+        if(!flag) {
+           return false;
+        }
+    }
+    return _t._flag;
+};
+
+/**
+ * Returns if there is any word in the trie that starts with the given prefix. 
+ * @param {string} prefix
+ * @return {boolean}
+ */
+Trie.prototype.startsWith = function(prefix) {
+    var _t = this._root;
+    var flag = false;
+    for(var i = 0; i < prefix.length; i++) {
+        flag = false;
+        for(var j = 0; j < _t._nodes.length; j++) {
+            if(_t._nodes[j]._value === prefix[i]) {
+                _t = _t._nodes[j];
+                flag = true;
+                break;
+            }
+        }
+        if(!flag) {
+           return false;
+        }
+    }
+    return true;
+};
+
+/** 
+ * Your Trie object will be instantiated and called as such:
+ * var obj = Object.create(Trie).createNew()
+ * obj.insert(word)
+ * var param_2 = obj.search(word)
+ * var param_3 = obj.startsWith(prefix)
+ */
 ```
