@@ -659,3 +659,538 @@ Trie.prototype.startsWith = function(prefix) {
  * var param_3 = obj.startsWith(prefix)
  */
 ```
+#### 二叉树中序遍历
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var inorderTraversal = function(root) {
+    var ans = [];
+    function dfs(rt) {
+        if(!rt) return;
+        dfs(rt.left);
+        ans.push(rt.val);
+        dfs(rt.right);
+    }
+    dfs(root);
+    return ans;
+};
+// 非递归
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var inorderTraversal = function(root) {
+    var ans = [];
+    var t = [];
+    var last;
+    var rt;
+    if(!root) return ans;
+    last = t.push(root);
+    while(t.length > 0) {
+        rt = t[last - 1];
+        if(rt.left) {
+            last = t.push(rt.left);
+            rt.left = null;
+        }else {
+            ans.push(rt.val);
+            last--;
+            t.pop();
+            if(rt.right) {
+                last = t.push(rt.right);
+            }
+        }
+    }
+    return ans;
+};
+```
+#### 二叉树的层次遍历
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[][]}
+ */
+var levelOrder = function(root) {
+    var flag = true;
+    var ans = [];
+    var pre = [];
+    var next = [];
+    if(!root) return ans;
+    pre.push(root);
+    while(pre.length > 0 || next.length > 0) {
+        if(flag) {
+            var pa = [];
+            var p;
+            while(pre.length > 0) {
+                p = pre.shift();
+                pa.push(p.val);
+                if(p.left) {
+                    next.push(p.left);
+                }
+                if(p.right) {
+                    next.push(p.right);
+                }
+            }
+            flag = !flag;
+            if(pa.length > 0) ans.push(pa);
+        }else {
+            var na = [];
+            var n;
+            while(next.length > 0) {
+                n = next.shift();
+                na.push(n.val);
+                if(n.left) {
+                    pre.push(n.left);
+                }
+                if(n.right) {
+                    pre.push(n.right);
+                }
+            }
+             flag = !flag;
+            if(na.length > 0) ans.push(na);
+        }
+    }
+    return ans;
+};
+```
+#### 最大子序和
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxSubArray = function(nums) {
+    var sum = 0;
+    var ans = nums[0];
+    for(var i = 0; i < nums.length; i++) {
+        if(sum < 0) {
+            sum = nums[i];
+        }else {
+            sum += nums[i];
+        }
+        ans = Math.max(ans, sum);
+    }
+    return ans;
+};
+```
+#### 爬楼梯
+```javascript
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var climbStairs = function(n) {
+    var ans = [0, 1, 2];
+    for(var i = 3; i <= n; i++) {
+        ans[i] = ans[i - 1] + ans[i - 2];
+    }
+    return ans[n];
+};
+```
+#### 不同路径
+```javascript
+/**
+ * @param {number} m
+ * @param {number} n
+ * @return {number}
+ */
+var uniquePaths = function(m, n) {
+    var ans = [];
+    for(var i = 0; i < m; i++) {
+        ans.push([]);
+        for(var j = 0; j < n; j++) {
+            if(i === 0) {
+                ans[i][j] = 1;
+            }else {
+                if(j === 0) {
+                     ans[i][j] = ans[i - 1][j];
+                }else {
+                     ans[i][j] = ans[i][j - 1] + ans[i - 1][j];
+                }
+            }
+        }
+    }
+    return ans[m - 1][n - 1];
+};
+```
+#### 不同路径2
+```javascript
+/**
+ * @param {number[][]} obstacleGrid
+ * @return {number}
+ */
+var uniquePathsWithObstacles = function(obstacleGrid) {
+     var ans = [];
+     var m = obstacleGrid.length;
+     var n = obstacleGrid[0].length;
+    for(var i = 0; i < m; i++) {
+        ans.push([]);
+        for(var j = 0; j < n; j++) {
+            if(i === 0) {
+                if(obstacleGrid[i][j]) {
+                     ans[i][j] = 0;
+                }else {
+                     ans[i][j] = j === 0 ? 1 : ans[i][j - 1];
+                }
+            }else {
+                if(j === 0) {
+                    if(obstacleGrid[i][j]) {
+                        ans[i][j] = 0;
+                    }else {
+                        ans[i][j] = ans[i - 1][j];
+                    }
+                }else {
+                    if(obstacleGrid[i][j]) {
+                        ans[i][j] = 0;
+                    }else {
+                        ans[i][j] = ans[i][j - 1] + ans[i - 1][j];
+                    }
+                }
+            }
+        }
+    }
+    return ans[m - 1][n - 1];
+};
+```
+#### 最小花费爬楼梯
+```javascript
+/**
+ * @param {number[]} cost
+ * @return {number}
+ */
+var minCostClimbingStairs = function(cost) {
+    var ans = [];
+    var len = cost.length;
+    for(var i = 0; i < cost.length; i++) {
+        if(i < 2) ans[i] = cost[i];
+        else {
+            ans[i] = cost[i]+ Math.min(ans[i - 1], ans[i - 2]);
+        }
+    }
+    return Math.min(ans[len - 1], ans[len - 2]);
+};
+```
+#### 杨辉三角2
+```javascript
+/**
+ * @param {number} rowIndex
+ * @return {number[]}
+ */
+var getRow = function(rowIndex) {
+    var ans =[];
+    for(var i = 0; i <= rowIndex; i++) {
+        ans.push([]);
+        for(var j = 0; j <= i; j++) {
+            if(j === 0 || j === i) ans[i][j] = 1;
+            else {
+                ans[i][j] = ans[i - 1][j - 1] +ans[i - 1][j];
+            }
+        }
+    }
+    return ans[rowIndex];
+};
+```
+#### 杨辉三角
+```javascript
+/**
+ * @param {number} numRows
+ * @return {number[][]}
+ */
+var generate = function(numRows) {
+    var ans = [];
+    for(var i = 0; i < numRows; i++) {
+        ans.push([]);
+        for(var j = 0; j <= i; j++) {
+            if(j === 0 || j === i) ans[i][j] = 1;
+            else {
+                ans[i][j] = ans[i - 1][j - 1] +ans[i - 1][j];
+            }
+        }
+    }
+    return ans;
+};
+```
+#### 最长上升子序列
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var lengthOfLIS = function(nums) {
+    var len = nums.length;
+    var ans = [];
+    var res = 0;
+    for(var i = 0; i < len; i++) {
+        ans[i] = 1;
+        for(var j = 0; j < i; j++) {
+            if(nums[i] > nums[j]) {
+                ans[i] = Math.max(ans[i], ans[j] + 1);
+            }
+        }
+        res = Math.max(res, ans[i]);
+    }
+    return res;
+};
+```
+#### 最长递增子序列的个数
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var findNumberOfLIS = function(nums) {
+    var len = nums.length;
+    var ans = [];
+    var res = 0;
+    for(var i = 0; i < len; i++) {
+        ans[i] = 1;
+        for(var j = 0; j < i; j++) {
+            if(nums[i] > nums[j]) {
+                ans[i] = Math.max(ans[i], ans[j] + 1);
+            }
+        }
+        res = Math.max(res, ans[i]);
+    }
+    function dfs(r, end) {
+        var as = 0;
+        if(r === 0) return 1;
+        for(var k = end; k >= 0; k--) {
+            if(ans[k] === r && nums[end] > nums[k]) {
+                as = as + dfs(r - 1, k);
+            }
+        }
+        return as;
+    }
+    var final = 0;
+    for(var y = 0; y < len; y++) {
+        if(res === ans[y]) {
+            final = final + dfs(res - 1, y);
+        }
+    }
+    return final;
+};
+```
+#### 区间和检索
+```javascript
+/**
+ * @param {number[]} nums
+ */
+var NumArray = function(nums) {
+    var ans = [];
+    var len = nums.length;
+    for(var i = 0; i < len; i++) {
+       ans[i] = i === 0 ? nums[i] : ans[i - 1] + nums[i];
+    }
+    this.ans = ans;
+};
+NumArray.createNew = function(nums) {
+    return new NumArray(nums);
+}
+/** 
+ * @param {number} i 
+ * @param {number} j
+ * @return {number}
+ */
+NumArray.prototype.sumRange = function(i, j) {
+    return i === 0 ? this.ans[j] : this.ans[j] - this.ans[i - 1];
+};
+
+/** 
+ * Your NumArray object will be instantiated and called as such:
+ * var obj = Object.create(NumArray).createNew(nums)
+ * var param_1 = obj.sumRange(i,j)
+ */
+ ```
+ #### 打家劫舍
+ ```javascript
+ /**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var rob = function(nums) {
+    var ans = [];
+    var len = nums.length;
+    for(var i = 0; i < len; i++) {
+        ans.push([]);
+        if(i === 0) {
+            ans[i][0] = 0;
+            ans[i][1] = nums[i];
+        }else {
+            ans[i][0] = Math.max(ans[i - 1][1], ans[i - 1][0]);
+            ans[i][1] = ans[i - 1][0] + nums[i];
+        }
+    }
+    return len > 0 ? Math.max(ans[len - 1][1], ans[len - 1][0]) : 0;
+};
+```
+#### 打家劫舍2
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var rob = function(nums) {
+    var len = nums.length;
+    function solve(start, end) {
+        var ans = [];
+        for(var j = 0; j < start && j < len; j++) ans.push([0, nums[j]]);
+        for(var i = start; i < end; i++) {
+            ans.push([]);
+            if(i === start) {
+                ans[i][0] = 0;
+                ans[i][1] = nums[i];
+            }else {
+                ans[i][0] = Math.max(ans[i - 1][1], ans[i - 1][0]);
+                ans[i][1] = ans[i - 1][0] + nums[i];
+            }
+        }
+        return end > 0 ? Math.max(ans[end - 1][1], ans[end - 1][0]) : 0;
+    }
+    return Math.max(solve(0, len - 1), solve(1, len));
+};
+```
+#### 打家劫舍3
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var rob = function(root) {
+    let Max = Math.max
+     function solve(rt) {
+        if(!rt) return {take: 0,untake: 0}
+        let st = solve(rt.left)
+        let sr = solve(rt.right)
+        // console.log(st, sr)
+        let take = st.untake + sr.untake + rt.val
+        let untake =Max(st.take, st.untake) + Max(sr.take, sr.untake)
+        return {take, untake}
+    }
+    let ans = solve(root)
+    return Max(ans.take, ans.untake)
+};
+```
+#### 买股票最佳时机
+```javascript
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function(prices) {
+    let len = prices.length;
+    let ans = 0;
+    let Max = Math.max;
+    let t;
+    for(let i = 0; i < len; i++) {
+        t = 0;
+        for(let j = 0; j < i; j++) {
+            t = Max(prices[i] - prices[j], t);
+        }
+        ans = Max(ans, t);
+    }
+    return ans;
+};
+```
+#### 解码方法
+```javascript
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var numDecodings = function(s) {
+    let len = s.length;
+    let ans = [];
+    let n;
+    for(let i = 0; i < len; i++) {
+        if(i === 0) {
+            if(s[i] === '0') ans[i] = 0;
+            else ans[i] = i + 1;
+        }
+        else {
+            if(s[i - 1] === '0' && s[i] === '0') {
+                ans[i] = 0;
+            }else if(s[i - 1] === '0' && s[i] !== '0') {
+                ans[i] = ans[i - 1];    
+            }else if(s[i - 1] !== '0' && s[i] === '0') {
+                n = Number(s[i - 1] + s[i]);
+                if(n > 26) {
+                    ans[i] = 0;
+                }else {
+                    ans[i] = i === 1 ? 1 : ans[i - 2];
+                }    
+            }else {
+                n = Number(s[i - 1] + s[i]);
+                if(n > 26) {
+                    ans[i] = ans[i - 1];
+                }else {
+                    ans[i] = i === 1 ? ans[i - 1] + 1 : ans[i - 1] + ans[i - 2];
+                }
+            } 
+        }
+    }
+    return ans[len - 1];
+};
+```
+#### 三角形最小路径和
+```javascript
+/**
+ * @param {number[][]} triangle
+ * @return {number}
+ */
+// O(N) 空间复杂度只需要改成per = [], current = [],因为i状态只于i-1有关
+var minimumTotal = function(triangle) {
+    let len = triangle.length
+    const Min = Math.min
+    let ans = []
+    for(let i = 0; i < len; i++) {
+        ans.push([])
+        if(i === 0) {
+            ans[i][0] = triangle[i][0]
+            continue
+        }
+        for(let j = 0; j <= i; j++) {
+            if(j === 0) {
+                ans[i][j] = ans[i - 1][j] + triangle[i][j]
+            }else if(j === i) {
+                ans[i][j] = ans[i - 1][j - 1] + triangle[i][j]
+            }else {
+                ans[i][j] = Min(ans[i - 1][j], ans[i - 1][j - 1]) + triangle[i][j]
+            }
+        }
+    }
+    let final = 1 << 30
+    for(let i = 0; i < len; i++) {
+        final = Min(final, ans[len - 1][i])
+    }
+    return len <= 0 ? 0 : final
+};
+```
