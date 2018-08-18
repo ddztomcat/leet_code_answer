@@ -1194,3 +1194,126 @@ var minimumTotal = function(triangle) {
     return len <= 0 ? 0 : final
 };
 ```
+#### 丑数2
+```javascript
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var nthUglyNumber = function(n) {
+    let a,b,c
+    a = b = c = 0
+    let ans = [1]
+    let Min = Math.min
+    let t = 1
+    for(let i = 1; i < n; i++) {
+        t = Min(ans[a] * 2, ans[b] * 3, ans[c] * 5)
+        if(t === ans[a] * 2) a++
+        if(t === ans[b] * 3) b++
+        if(t === ans[c] * 5) c++
+        ans.push(t)
+    }
+    return t
+};
+```
+#### 丑数
+```javascript
+/**
+ * @param {number} num
+ * @return {boolean}
+ */
+var isUgly = function(num) {
+    if(num <= 0) return false
+    while(num % 2 === 0) {
+        num /= 2
+    }
+    while(num % 3 === 0) {
+        num /= 3
+    }
+    while(num % 5 === 0) {
+        num /= 5
+    }
+    if(num === 1) return true
+    return false
+};
+```
+#### 二叉树前序遍历
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var preorderTraversal = function(root) {
+    let ans = []
+    function dfs(rt) {
+        if(!rt) return
+        ans.push(rt.val)
+        dfs(rt.left)
+        dfs(rt.right)
+    }
+    dfs(root)
+    return ans
+};
+// 非递归版
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var preorderTraversal = function(root) {
+    let ans = []
+    let t = []
+    if(!root) return ans
+    let len = t.push(root)
+    ans.push(root.val)
+    while(t.length > 0) {
+        let rt = t[len - 1]
+        if(rt.left) {
+            ans.push(rt.left.val)
+            len = t.push(rt.left)
+            rt.left = null
+        }else {
+            t.pop()
+            len--
+            if(rt.right) {
+                ans.push(rt.right.val)
+                len = t.push(rt.right)
+            }
+        }
+    }
+    return ans
+};
+```
+#### 判断子序列
+```javascript
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+var isSubsequence = function(s, t) {
+    let lens = s.length
+    let lent = t.length
+    let start = 0
+    for(let i = 0; i < lent; i++) {
+        if(start === lens) return true
+       if(t[i] === s[start]) {
+           start++
+       }
+    }
+    return lens === start
+};
+```
