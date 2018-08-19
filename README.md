@@ -1317,3 +1317,123 @@ var isSubsequence = function(s, t) {
     return lens === start
 };
 ```
+#### 匹配子序列的单词数
+```javascript
+/**
+ * @param {string} S
+ * @param {string[]} words
+ * @return {number}
+ */
+// 用set水过去，但意义不大
+var numMatchingSubseq = function(S, words) {
+    let len = S.length
+    let lws = words.length
+    let ans = 0
+    let set_fail = new Set()
+    let set_ok = new Set()
+    for(let i = 0; i < lws; i++) {
+        let l = words[i].length
+        let start = 0
+        if(set_ok.has(words[i])) {
+            ans++
+            continue
+        }
+        if(set_fail.has(words[i])) {
+            continue
+        }
+        for(let j = 0; j < len; j++) {
+            if(words[i][start] === S[j]) start++
+            if(start === l) break
+        }
+        if(start === l) {
+            ans++
+            set_ok.add(words[i])
+        }else {
+            set_fail.add(words[i])
+        }
+    }
+    return ans
+};
+```
+#### 一和零
+```javascript
+/**
+ * @param {string[]} strs
+ * @param {number} m
+ * @param {number} n
+ * @return {number}
+ */
+// 01背包 问题
+var findMaxForm = function(strs, m, n) {
+    let Max = Math.max
+    let len = strs.length
+    let ans = []
+    function find_zero(str) {
+        let sum = 0
+        for(let i = 0; i < str.length; i++) {
+            if(str[i] === '0') sum++
+        }
+        return sum
+    }
+    function find_one(str) {
+        let sum = 0
+        for(let i = 0; i < str.length; i++) {
+            if(str[i] === '1') sum++
+        }
+        return sum
+    }
+    for(let i = 0; i < len; i++) {
+        ans.push([])
+        let count_zero = find_zero(strs[i])
+        let count_one = find_one(strs[i])
+        for(let j = 0; j <= m; j++) {
+            ans[i].push([])
+            for(let k = 0; k <= n; k++) {
+                ans[i][j].push([])
+                if(count_zero <= j && count_one <= k) {
+                    ans[i][j][k] = i === 0 ? 1 : Max(ans[i - 1][j - count_zero][k - count_one] + 1, ans[i - 1][j][k])
+                }else {
+                    ans[i][j][k] = i === 0 ? 0 : ans[i - 1][j][k]
+                }
+            }
+        }
+    }
+    // console.log(ans)
+    return ans[len - 1][m][n]
+};
+```
+#### 二叉树剪枝
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {TreeNode}
+ */
+var pruneTree = function(root) {
+    function dfs(rt) {
+        if(!rt) return true
+        let flag_left = dfs(rt.left)
+        if(flag_left) {
+            rt.left = null
+        }
+        let flag_right = dfs(rt.right)
+        if(flag_right) {
+            rt.right = null
+        }
+        if(flag_left && flag_right && rt.val === 0) {
+            rt = null
+            return true
+        }
+        return false
+    }
+    dfs(root)
+    return root
+    
+};
+```
