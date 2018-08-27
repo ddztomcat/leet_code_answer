@@ -1437,3 +1437,160 @@ var pruneTree = function(root) {
     
 };
 ```
+#### 01矩阵
+```javascript
+/**
+ * @param {number[][]} matrix
+ * @return {number[][]}
+ */
+var updateMatrix = function(matrix) {
+    let m = matrix.length
+    let n = matrix[0].length
+    let ans = []
+    const INF = 1 << 30
+    const Min = Math.min
+    for(let i = 0; i < m; i++) {
+        ans.push([])
+        for(let j = 0; j < n; j++) {
+            ans[i][j] = matrix[i][j] === 0 ? 0 : INF
+            if(i === 0) {
+                ans[i][j] = j === 0 ? ans[i][j] : Min(ans[i][j - 1] + 1, ans[i][j])
+            }else {
+                ans[i][j] = j === 0 ? Min(ans[i - 1][j] + 1, ans[i][j]) : Min(ans[i - 1][j] + 1, ans[i][j], ans[i][j - 1] + 1)
+            }
+        }
+    }
+    for(let i = m - 1; i >= 0; i--) {
+        for(let j = n - 1; j >= 0; j--) {
+            if(i === m - 1) {
+                ans[i][j] = j === n - 1 ? ans[i][j] : Min(ans[i][j + 1] + 1, ans[i][j])
+            }else {
+                ans[i][j] = j === n - 1 ? Min(ans[i + 1][j] + 1, ans[i][j]) : Min(ans[i + 1][j] + 1, ans[i][j], ans[i][j + 1] + 1)
+            }
+        }
+    }
+    return ans
+};
+```
+#### 两数相加2
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+var addTwoNumbers = function(l1, l2) {
+    let pre = null
+    let cur
+    let t1  = []
+    let t2 = []
+    while(l1) {
+        t1.push(l1)
+        l1 = l1.next
+    }
+    while(l2) {
+        t2.push(l2)
+        l2 = l2.next
+    }
+    let flag = 0
+    let val = 0
+    while(t1.length && t2.length) {
+        let a = t1.pop()
+        let b = t2.pop()
+        val = a.val + b.val + flag
+        flag = parseInt(val / 10)
+        cur = new ListNode(val % 10)
+        cur.next = pre
+        pre = cur
+    }
+    while(t1.length) {
+        let a = t1.pop()
+        val = a.val + flag
+        flag = parseInt(val / 10)
+        cur = new ListNode(val % 10)
+        cur.next = pre
+        pre = cur
+    }
+    while(t2.length) {
+        let a = t2.pop()
+        val = a.val + flag
+        flag = parseInt(val / 10)
+        cur = new ListNode(val % 10)
+        cur.next = pre
+        pre = cur
+    }
+    if(flag > 0) {
+        cur = new ListNode(flag)
+        cur.next = pre
+        pre = cur
+    }
+    return pre
+};
+```
+#### 零钱兑换
+```javascript
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+    let ans = []
+    let len = coins.length
+    const INF = 1 << 30
+    const Min = Math.min
+    for(let i = 0; i < len; i++) {
+        ans.push([])
+        for(let j = 0; j <= amount; j++) {
+            ans[i][j] = j === 0 ? 0 : INF
+            if(i === 0) {
+                ans[i][j] = j >= coins[i] ? Min(ans[i][j], ans[i][j - coins[i]] + 1) : ans[i][j]
+            }else {
+                ans[i][j] = j >= coins[i] ? Min(ans[i][j], ans[i - 1][j], ans[i][j - coins[i]] + 1) :  Min(ans[i][j], ans[i - 1][j])
+            }
+        }
+    }
+    return ans[len - 1][amount] === INF ? -1 : ans[len - 1][amount]
+};
+```
+#### 组合总和
+```javascript
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+var combinationSum = function(candidates, target) {
+    let ans = []
+    let t = []
+    let len = candidates.length
+    candidates.sort((a, b) => a - b)
+    function dfs(cur, val) {
+        let v = 0
+        let index = 0
+        if(val === target) {
+            ans.push([].concat(t))
+            return
+        }
+        if(cur === len) return
+        dfs(cur + 1, v + val)
+        while(v + val < target) {
+            index++
+            v += candidates[cur]
+            t.push(candidates[cur])
+            dfs(cur + 1, v + val)
+        }
+        
+        for(let i = 0; i < index; i++) t.pop()
+    }
+    dfs(0, 0)
+    return ans
+};
+```
