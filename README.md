@@ -1594,3 +1594,113 @@ var combinationSum = function(candidates, target) {
     return ans
 };
 ```
+#### 组合总数2
+```javascript
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+var combinationSum2 = function(candidates, target) {
+    let ans = []
+    let t = []
+    let len = candidates.length
+    candidates.sort((a, b) => a - b)
+    function unique(p) {
+       for(let i = 0; i < ans.length; i++) {
+           let item = ans[i]
+           let flag = false
+           if(item.length === p.length) {
+               p.forEach((it, ind) => {
+                   if(it !== item[ind]) flag = true
+               })
+           }else {
+               flag = true
+           }
+           if(!flag) return false
+       }
+        return true
+    }
+    function dfs(cur, val) {
+        let v = 0
+        let index = 0
+        if(val === target) {
+            let temp = [].concat(t)
+            if(unique(temp)) {
+                ans.push(temp)
+            }
+            return
+        }
+        if(cur === len) return
+        dfs(cur + 1, v + val)
+        while(v + val < target && index < 1) {
+            index++
+            v += candidates[cur]
+            t.push(candidates[cur])
+            dfs(cur + 1, v + val)
+        }
+        
+        for(let i = 0; i < index; i++) t.pop()
+    }
+    dfs(0, 0)
+    return ans
+};
+```
+#### 组合总数3
+```javascript
+/**
+ * @param {number} k
+ * @param {number} n
+ * @return {number[][]}
+ */
+var combinationSum3 = function(k, n) {
+    let ans = []
+    let t = []
+    function dfs(cur, val, count) {
+        let v = 0
+        let index = 0
+        if(val === n && count === k) {
+            let temp = [].concat(t)
+            ans.push(temp)
+            return
+        }
+        if(cur === 10) return
+        dfs(cur + 1, v + val, count)
+        while(v + val < n && index < 1) {
+            index++
+            v += cur
+            t.push(cur)
+            dfs(cur + 1, v + val, count + index)
+        }
+        
+        for(let i = 0; i < index; i++) t.pop()
+    }
+    dfs(1, 0, 0)
+    return ans
+};
+```
+#### 组合
+```javascript
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {number[][]}
+ */
+var combine = function(n, k) {
+    let t = []
+    let ans = []
+    function dfs(cur, now) {
+        if(cur > n + 1) return 
+        if(now === k) {
+            ans.push([].concat(t))
+        }
+        for(let i = cur; i <= n; i++) {
+            t.push(i)
+            dfs(i + 1, now + 1)
+            t.pop()
+        }
+    }
+    dfs(1, 0)
+    return ans
+};
+```
