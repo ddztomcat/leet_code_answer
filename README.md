@@ -1704,3 +1704,191 @@ var combine = function(n, k) {
     return ans
 };
 ```
+#### 零钱兑换2
+```javascript
+/**
+ * @param {number} amount
+ * @param {number[]} coins
+ * @return {number}
+ */
+var change = function(amount, coins) {
+    let clen = coins.length
+    let ans = []
+    for(let i = 0; i < clen; i++) {
+        ans.push([])
+        for(let j = 0; j <= amount; j++) {
+            ans[i][j] = 0
+            if(i === 0) {
+                if(j === coins[i]) {
+                    ans[i][j] = 1
+                }else if(j > coins[i]) {
+                    ans[i][j] = ans[i][j - coins[i]]
+                }
+            }else {
+                 if(j === coins[i]) {
+                    ans[i][j] = ans[i - 1][j - coins[i]] + ans[i - 1][j] + (ans[i][j - coins[i]] ? ans[i][j - coins[i]] : 1)
+                }else if(j > coins[i]) {
+                    ans[i][j] = ans[i - 1][j] + ans[i][j - coins[i]]
+                }else {
+                    ans[i][j] = ans[i - 1][j]
+                }
+            }
+        }
+    }
+    if(amount < 1) return 1
+    return clen < 1 ? 0 : ans[clen - 1][amount]
+};
+```
+#### 验证二叉搜索树
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isValidBST = function(r) {
+    let flag = true
+    if(!r) return true
+    const Min = Math.min
+    const Max = Math.max
+    function dfs(root) {
+        if(!root) return null
+        let left = dfs(root.left)
+        let right = dfs(root.right)
+        if(left && right) {
+            if(!(left.max < root.val && root.val < right.min)) flag = false
+            return {
+                min: Min(left.min, root.val, right.min),
+                max: Max(left.max, root.val, right.max)
+            }
+        }else if(!left && right) {
+            if(right.min <= root.val) flag = false
+            return {
+                min: Min(right.min, root.val),
+                max: Max(right.max, root.val)
+            }
+        }else if(!right && left) {
+            if(left.max >= root.val) flag = false
+            return {
+                min: Min(left.min, root.val),
+                max: Max(left.max, root.val)
+            }
+        }else {
+            return {
+                min: root.val,
+                max: root.val
+            }
+        }
+    }
+    dfs(r)
+    return flag
+};
+```
+#### 路径总和2
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} sum
+ * @return {number[][]}
+ */
+var pathSum = function(root, sum) {
+    let ans = []
+    let t = []
+    function dfs(rt, cur) {
+        if(!rt) return
+        t.push(rt.val)
+        rt.left && dfs(rt.left, cur + rt.val)
+        rt.right && dfs(rt.right, cur + rt.val)
+        if(!rt.left && !rt.right &&　cur + rt.val === sum) {
+            ans.push([].concat(t))
+        }
+        t.pop()
+    }
+    dfs(root, 0)
+    return ans
+};
+```
+#### 二叉树展为链表
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {void} Do not return anything, modify root in-place instead.
+ */
+var flatten = function(root) {
+    let ans = []
+    function dfs(rt) {
+        if(!rt) return 
+        ans.push(rt)
+        dfs(rt.left)
+        dfs(rt.right)
+    }
+    dfs(root)
+    let pre
+    while(ans.length > 0) {
+        t = ans.shift()
+        if(!pre) {
+            pre = root
+        }else {
+            pre.right = t
+            pre.left = null
+            pre = t
+        }
+    }
+    if(pre) {
+        pre.left = pre.right = null
+    }
+};
+```
+#### 前序中序构造二叉树
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {number[]} preorder
+ * @param {number[]} inorder
+ * @return {TreeNode}
+ */
+var buildTree = function(preorder, inorder) {
+    let ans
+    let pL = preorder.length
+    let iL = inorder.length
+    function generateTree(preStart, preEnd, inStart, inEnd) {
+        if(preStart < 0 || preEnd >= pL || inStart < 0 || inEnd >= iL || preStart > preEnd || inStart > inEnd) return null
+        let t
+        for(let i = inStart; i <= inEnd; i++) {
+            if(inorder[i] === preorder[preStart]) t = i
+        }
+        let rt = new TreeNode(preorder[preStart])
+        rt.left = generateTree(preStart + 1, preStart + t - inStart, inStart, t - 1)
+        rt.right = generateTree(preStart + t - inStart + 1, preEnd, t + 1, inEnd)
+        return rt
+    }
+    ans = generateTree(0, pL - 1, 0, iL - 1)
+    return ans
+};
+```
