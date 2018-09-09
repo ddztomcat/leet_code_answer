@@ -2104,3 +2104,60 @@ var solve = function(board) {
     }
 };
 ```
+#### 目标和
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} S
+ * @return {number}
+ */
+var findTargetSumWays = function(nums, S) {
+    let len = nums.length
+    let sum = 0
+    function dfs(flag, ind, val) {
+       if(ind >= len ) return
+       let t = val + flag * nums[ind]
+       if(ind === len - 1 && S === t) sum++
+       dfs(1, ind + 1, t)
+       dfs(-1, ind + 1, t)
+    }
+    dfs(1, 0, 0)
+    dfs(-1, 0, 0)
+    return sum
+};
+```
+####在每个树行中找最大值
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var largestValues = function(root) {
+    let ans = []
+    let pre = []
+    let next = []
+    if(!root) return ans
+    pre.push(root)
+    while(pre.length > 0 || next.length > 0) {
+        if(pre.length <= 0) {
+            [pre, next] = [next, pre]
+        }
+        let m = pre[0].val
+        while(pre.length > 0) {
+            let t = pre.shift()
+            t.left && next.push(t.left)
+            t.right && next.push(t.right)
+            m = Math.max(m, t.val)
+        }
+        ans.push(m)
+    }
+    return ans
+};
+```
