@@ -1892,3 +1892,215 @@ var buildTree = function(preorder, inorder) {
     return ans
 };
 ```
+#### 中序后序生成二叉树
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {number[]} inorder
+ * @param {number[]} postorder
+ * @return {TreeNode}
+ */
+var buildTree = function(inorder, postorder) {
+    let ans
+    let pL = postorder.length
+    let iL = inorder.length
+    function generateTree(inStart, inEnd, posStart, posEnd) {
+        if(posStart < 0 || posEnd >= pL || inStart < 0 || inEnd >= iL || posStart > posEnd || inStart > inEnd) return null
+        let t
+        for(let i = inStart; i <= inEnd; i++) {
+            if(inorder[i] === postorder[posEnd]) t = i
+        }
+        let rt = new TreeNode(postorder[posEnd])
+        rt.left = generateTree(inStart, t - 1, posStart, posStart + t - inStart - 1)
+        rt.right = generateTree(t + 1, inEnd, posStart + t - inStart, posEnd - 1)
+        return rt
+    }
+    ans = generateTree(0, iL - 1, 0, pL - 1)
+    return ans
+};
+```
+#### 填充同一层的兄弟节点
+```javascript
+/**
+ * Definition for binary tree with next pointer.
+ * function TreeLinkNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = this.next = null;
+ * }
+ */
+
+/**
+ * @param {TreeLinkNode} root
+ * @return {void} Do not return anything, modify tree in-place instead.
+ */
+var connect = function(root) {
+    let cur = []
+    let pur = []
+    if(!root) return
+    cur.push(root)
+    while(cur.length > 0 || pur.length > 0) {
+        if(cur.length <= 0) {
+            let t = cur
+            cur = pur
+            pur = t
+        }
+        let pre = null
+        while(cur.length > 0) {
+            let t = cur.shift()
+            if(pre) {
+                pre.next = t
+            }
+            t.left && pur.push(t.left)
+            t.right && pur.push(t.right)
+            pre = t
+        }
+    }
+};
+```
+#### 填充同一层的兄弟节点2
+```javascript
+/**
+ * Definition for binary tree with next pointer.
+ * function TreeLinkNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = this.next = null;
+ * }
+ */
+
+/**
+ * @param {TreeLinkNode} root
+ * @return {void} Do not return anything, modify tree in-place instead.
+ */
+var connect = function(root) {
+    let cur = []
+    let pur = []
+    if(!root) return
+    cur.push(root)
+    while(cur.length > 0 || pur.length > 0) {
+        if(cur.length <= 0) {
+            let t = cur
+            cur = pur
+            pur = t
+        }
+        let pre = null
+        while(cur.length > 0) {
+            let t = cur.shift()
+            if(pre) {
+                pre.next = t
+            }
+            t.left && pur.push(t.left)
+            t.right && pur.push(t.right)
+            pre = t
+        }
+    }
+};
+```
+#### 子数组按位或操作
+```javascript
+/**
+ * @param {number[]} A
+ * @return {number}
+ */
+var subarrayBitwiseORs = function(A) {
+    let len = A.length
+    let pre = new Set()
+    let ans = []
+    for(let i = 0; i < len; i++) {
+        let t = A[i]
+        let arr = [t]
+        ans.push(t)
+        for(let key of pre.keys()) {
+            ans.push(key | t)
+            arr.push(key | t)
+        }
+       pre = new Set(arr)
+    }
+    
+    return (new Set(ans)).size
+};
+```
+#### 根到节点数字之和
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var sumNumbers = function(root) {
+    let ans = 0
+    function dfs(rt, val) {
+        if(!rt) return
+        val += rt.val
+        if(!rt.left && !rt.right) {
+            ans += Number(val)
+            return
+        }
+        rt.left && dfs(rt.left, val)
+        rt.right && dfs(rt.right, val)
+    }
+    dfs(root, '')
+    return ans
+};
+```
+#### 被围绕的区域
+```javascript
+/**
+ * @param {character[][]} board
+ * @return {void} Do not return anything, modify board in-place instead.
+ */
+var solve = function(board) {
+    let xl = board.length
+    if(xl <= 0) return 
+    let yl = board[0].length
+    let t = []
+    for(let i = 0; i < xl; i++) {
+        t.push([])
+        for(let j = 0; j < yl; j++) {
+            t[i][j] = 0
+        }
+    }
+    function dfs(x, y, ind) {
+        t[x][y] = -1
+        let flag = true
+        if(x <= 0 || x >= xl - 1 || y <= 0 || y >= yl - 1) flag = false
+        if(x >= 0 && x < xl && y >= 0 && y < yl) {
+            if(x - 1 >= 0 && !t[x - 1][y]) flag = (board[x - 1][y] === 'X' || dfs(x - 1, y, ind)) && flag
+            if(y + 1 < yl && !t[x][y + 1]) flag = (board[x][y + 1] === 'X' || dfs(x, y + 1, ind)) && flag
+            if(x + 1 < xl && !t[x + 1][y]) flag = (board[x + 1][y] === 'X' || dfs(x + 1, y, ind)) && flag
+            if(y - 1 >= 0 && !t[x][y - 1]) flag = (board[x][y - 1] === 'X' || dfs(x, y - 1, ind)) && flag
+        }
+        if(flag) t[x][y] = ind
+        return flag
+    }
+    function toX(ind) {
+        for(let i = 0; i < xl; i++) {
+            for(let j = 0; j < yl; j++)
+                if(t[i][j] === ind) board[i][j] = 'X'
+        }
+    }
+    let index = 1
+     for(let i = 0; i < xl; i++) {
+        for(let j = 0; j < yl; j++) {
+            if(board[i][j] === 'O' && !t[i][j]) {
+                let res = dfs(i, j, index)
+                if(res) {
+                    toX(index)
+                }
+                index++
+            }
+        }
+    }
+};
+```
