@@ -2126,7 +2126,7 @@ var findTargetSumWays = function(nums, S) {
     return sum
 };
 ```
-####在每个树行中找最大值
+#### 在每个树行中找最大值
 ```javascript
 /**
  * Definition for a binary tree node.
@@ -2157,6 +2157,38 @@ var largestValues = function(root) {
             m = Math.max(m, t.val)
         }
         ans.push(m)
+    }
+    return ans
+};
+```
+#### 找出左下角的值
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var findBottomLeftValue = function(root) {
+    let pre = []
+    let next = []
+    pre.push(root)
+    let ans
+    while(pre.length > 0 || next.length > 0) {
+        if(pre.length <= 0) {
+            [pre, next] = [next, pre]
+        }
+        ans = pre[0].val
+        while(pre.length > 0) {
+            let t = pre.shift()
+            t.left && next.push(t.left)
+            t.right && next.push(t.right)
+        }
     }
     return ans
 };
