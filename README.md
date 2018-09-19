@@ -2193,3 +2193,95 @@ var findBottomLeftValue = function(root) {
     return ans
 };
 ```
+#### 子集
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var subsets = function(nums) {
+    let len = nums.length
+    let ans = []
+    let t = []
+    function dfs(ind, flag) {
+        if(ind === len) return
+        if(flag) t.push(nums[ind])
+        if(ind === len - 1) {
+            ans.push([].concat(t))
+        }
+        dfs(ind + 1, 1)
+        dfs(ind + 1, 0)
+        if(flag) t.pop()
+    }
+    dfs(0, 1)
+    dfs(0, 0)
+    return ans
+};
+```
+#### 子集2
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var subsetsWithDup = function(nums) {
+    let len = nums.length
+    let ans = new Set()
+    let t = []
+    function dfs(ind, flag) {
+        if(ind === len) return
+        if(flag) t.push(nums[ind])
+        if(ind === len - 1) {
+            ans.add([].concat(t).sort((a, b) => a - b).join(','))
+        }
+        dfs(ind + 1, 1)
+        dfs(ind + 1, 0)
+        if(flag) t.pop()
+    }
+    dfs(0, 1)
+    dfs(0, 0)
+    let p = [...ans]
+    p = p.map(item => {
+        if(item.length <= 0) return []
+        else return item.split(',')
+    })
+    p.forEach(item => {
+        item.forEach((it, ind, arr) => {
+            arr[ind] = Number(it)
+        })
+    })
+    return p
+};
+```
+#### 朋友圈
+```javascript
+/**
+ * @param {number[][]} M
+ * @return {number}
+ */
+
+var findCircleNum = function(M) {
+    let len = M[0].length
+    let t = []
+    for(let i = 0; i < len; i++) t[i] = 0
+    function dfs(stu, m) {
+        for(let i = 0; i < len; i++) {
+            if(M[stu][i]) {
+               if(!t[i]) {
+                   t[i] = m
+                   dfs(i, m)
+               }
+            }
+        }
+    }
+    let mark = 1
+    for(let i = 0; i < len; i++) {
+        if(!t[i]) {
+            t[i] = mark
+            dfs(i, mark)
+            mark++
+        }
+    }
+    return mark - 1
+};
+```
