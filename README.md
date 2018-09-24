@@ -2285,3 +2285,78 @@ var findCircleNum = function(M) {
     return mark - 1
 };
 ```
+#### 递增子序列
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var findSubsequences = function(nums) {
+    let len = nums.length
+    let set = new Set()
+    let t = []
+    function dfs(cur, flag) {
+        if(cur === len) {
+            t.length > 1 && set.add(t.join(','))
+            return 
+        }
+        let push = false
+        let tl = t.length
+        if(flag && (!tl || (nums[cur] >= t[tl - 1]))) {
+            t.push(nums[cur])
+            push = true
+        }
+        dfs(cur + 1, true)
+        dfs(cur + 1, false)
+        if(push) t.pop()
+    }
+    dfs(0, true)
+    dfs(0, false)
+    let ans = []
+    for(let item of set.keys()) {
+        ans.push(item.split(',').map(n => Number(n)))
+    }
+    return ans
+};
+```
+#### 岛屿的个数
+```javascript
+/**
+ * @param {character[][]} grid
+ * @return {number}
+ */
+var numIslands = function(grid) {
+    let mark = []
+    let ans = 0
+    let m = grid.length
+    if(m < 1) return ans
+    let n = grid[0].length
+    let dx = [-1, 0, 1, 0]
+    let dy = [0, 1, 0, -1]
+    for(let i = 0; i < m; i++) {
+        mark[i] = []
+        for(let j = 0; j < n; j++) {
+            mark[i][j] = 0
+        }
+    }
+    function dfs(curX, curY) {
+        if(curX < 0 || curX >= m || curY < 0 || curY >= n || grid[curX][curY] !== '1'|| mark[curX][curY]) return
+        mark[curX][curY] = 1
+        for(let i = 0; i < 4; i++) {
+            let tx = curX + dx[i]
+            let ty = curY + dy[i]
+            dfs(tx, ty)
+        }
+    }
+    
+    for(let i = 0; i < m; i++) {
+        for(let j = 0; j < n; j++) {
+            if(grid[i][j] === '1' && !mark[i][j]) {
+                ans++
+                dfs(i, j)
+            }
+        }
+    }
+    return ans
+};
+```
