@@ -2360,3 +2360,79 @@ var numIslands = function(grid) {
     return ans
 };
 ```
+#### 课程表
+```javascript
+/**
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @return {boolean}
+ */
+var canFinish = function(numCourses, prerequisites) {
+    let t = []
+    let p = []
+    for(let i = 0; i < numCourses; i++) {
+        t[i] = 0
+        p[i] = []
+    }
+    for(let i = 0; i < prerequisites.length; i++) {
+       let [start, end] = prerequisites[i]
+       t[start]++
+       p[end].push(start)
+    }
+    let n = numCourses
+    while(n > 0) {
+        let flag = true
+        for(let i = 0; i < numCourses; i++) {
+            if(t[i] === 0) {
+                n--
+                flag = false
+                for(let j = 0; j < p[i].length; j++) {
+                    t[p[i][j]]--
+                }
+                t[i] = -1
+            }
+        }
+        if(flag) return false
+    }
+    return true
+};
+```
+#### 课程表2
+```javascript
+/**
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @return {number[]}
+ */
+var findOrder = function(numCourses, prerequisites) {
+    let t = []
+    let p = []
+    let ans = []
+    for(let i = 0; i < numCourses; i++) {
+        t[i] = 0
+        p[i] = []
+    }
+    for(let i = 0; i < prerequisites.length; i++) {
+       let [start, end] = prerequisites[i]
+       t[start]++
+       p[end].push(start)
+    }
+    let n = numCourses
+    while(n > 0) {
+        let flag = true
+        for(let i = 0; i < numCourses; i++) {
+            if(t[i] === 0) {
+                n--
+                ans.push(i)
+                flag = false
+                for(let j = 0; j < p[i].length; j++) {
+                    t[p[i][j]]--
+                }
+                t[i] = -1
+            }
+        }
+        if(flag) return []
+    }
+    return ans
+};
+```
