@@ -2436,3 +2436,67 @@ var findOrder = function(numCourses, prerequisites) {
     return ans
 };
 ```
+#### 课程表3
+```javascript
+/**
+ * @param {number[][]} courses
+ * @return {number}
+ */
+var scheduleCourse = function(courses) {
+    courses.sort((a, b) => {
+        let [sa, ea] = a
+        let [sb, eb] = b
+        if((ea < eb) || (ea === eb && sa <= sb)) return -1
+        else return 1
+    })
+    let len = courses.length
+    let t = []
+    for(let i = 0; i <= len; i++) t[i] = 0
+    let ans = 0
+    for(let i = 0; i < len; i++) {
+        let [start, end] = courses[i]
+        for(let j = ans; j >= 0; j--) {
+            let p = t[j] + start
+            if(p <= end && ((!t[j + 1]) || (t[j + 1] > p))) {
+                t[j + 1] = p
+            }
+        }
+        if(t[ans + 1] > 0) ans++
+    }
+    // console.log(courses)
+    // console.log(t, ans)
+    return ans
+};
+```
+#### 加油站
+```javascript
+/**
+ * @param {number[]} gas
+ * @param {number[]} cost
+ * @return {number}
+ */
+var canCompleteCircuit = function(gas, cost) {
+    let start = 0
+    let len = gas.length
+    let now = 0
+    for(let i = 0; i < len; i++) {
+        let current = i
+        let n = 0
+        let isOk = true
+        now = 0
+        while(n < len) {
+            now += gas[current]
+            if(now - cost[current] < 0) {
+                isOk = false
+                break
+            }else {
+                now -= cost[current]
+            }
+            n++
+            current = (current + 1) % len
+        }
+        if(isOk) return i
+    }
+    return -1
+};
+```
