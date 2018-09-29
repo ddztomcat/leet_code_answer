@@ -2557,3 +2557,38 @@ var canJump = function(nums) {
     return false
 };
 ```
+#### 救生艇
+```javascript
+/**
+ * @param {number[]} people
+ * @param {number} limit
+ * @return {number}
+ */
+var numRescueBoats = function(people, limit) {
+    let ans = 0
+    people.sort((a, b) => b - a)
+    function find(cur) {
+        for(let i = cur + 1; i < people.length; i++) {
+            if(people[i] + people[cur] <= limit) {
+                return i
+            }
+        }
+        return -1
+    }
+
+    for(let i = 0; i < people.length;) {
+        if(people[i] >= limit) {
+            ans++
+            people.splice(i, 1)
+        }else if(people[i] < limit) {
+            let t = find(i)
+            people.splice(i, 1)
+            if(t > 0) {
+                people.splice(t - 1, 1)
+            }
+            ans++
+        }
+    }
+    return ans
+};
+```
