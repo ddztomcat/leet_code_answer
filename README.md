@@ -2500,3 +2500,60 @@ var canCompleteCircuit = function(gas, cost) {
     return -1
 };
 ```
+#### 移调K位数字
+```javascript
+/**
+ * @param {string} num
+ * @param {number} k
+ * @return {string}
+ */
+var removeKdigits = function(num, k) {
+    let s = (num + '').split('')
+    function delete_0() {
+        while(s.length && (s[0] === '0')) {
+            s.splice(0, 1)
+        }
+    }
+    function find() {
+        delete_0()
+        let i = 1
+        for(; i < s.length; i++) {
+            if(s[i] < s[i - 1]) return i - 1
+        }
+        return i - 1
+    }
+    while(k > 0 && s.length) {
+        let index = find()
+        k--
+        s.splice(index, 1)
+    }
+    delete_0()
+    return s.length ? s.join('') : '0'
+};
+```
+#### 跳跃游戏
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+var canJump = function(nums) {
+    let index = 0
+    let len = nums.length
+    while(index < len) {
+        let k = nums[index]
+        let t = 0
+        let f = index
+        if(k + index >= len - 1) return true
+        if(nums[index] <= 0) return false
+        for(let i = index + 1, j = 0; j < k && i < len; i++, j++) {
+            if(i + nums[i] >= t) {
+                t = i + nums[i]
+                f = i
+            }
+        }
+        index = f
+    }
+    return false
+};
+```
