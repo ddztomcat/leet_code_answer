@@ -2592,3 +2592,49 @@ var numRescueBoats = function(people, limit) {
     return ans
 };
 ```
+#### 只出现1次的数字1
+```javascript
+```
+#### 只出现1次的数字2
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var singleNumber = function(nums) {
+    let ans = 1
+    let res = 0
+    let len = nums.length
+    for(let i = 0; i < 32; i++) {
+        let sum = 0
+        for(let j = 0; j < len; j++) {
+            let t = ans & nums[j]
+            if(t) sum++
+        }
+        if(sum % 3) {
+            res |= ans
+        }
+        ans <<= 1
+    }
+    return res
+};
+```
+#### 只出现1次的数字3
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var singleNumber = function(nums) {
+    let t = 0
+    let len = nums.length
+    for(let i = 0; i < len; i++) t ^= nums[i]
+    let k = t & (-t)
+    let a = 0, b = 0
+    for(let i = 0; i < len; i++) {
+        if(nums[i] & k) a ^= nums[i]
+        else b ^= nums[i]
+    }
+    return [a, b]
+};
+```
