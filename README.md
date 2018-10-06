@@ -2638,3 +2638,105 @@ var singleNumber = function(nums) {
     return [a, b]
 };
 ```
+#### 重复的DNA序列
+```javascript
+/**
+ * @param {string} s
+ * @return {string[]}
+ */
+var findRepeatedDnaSequences = function(s) {
+    let t = new Set()
+    let len = s.length
+    let ans = []
+    for(let i = 0; i < len; i++) {
+        let l = s.slice(i, i + 10)
+        if(t.has(l)) ans.push(l)
+        else t.add(l)
+    }
+    return [...new Set(ans)]
+};
+```
+#### 比特位计数
+```javascript
+/**
+ * @param {number} num
+ * @return {number[]}
+ */
+var countBits = function(num) {
+    let ans = []
+    // 解法一
+    for(let i = 0; i <= num; i++) {
+        let k = i
+        ans[i] = 0
+        while(k) {
+            k &= (k - 1)
+            ans[i]++
+        }
+    }
+    // 解法二
+    ans[0] = 0
+    for(let i = 1; i <= num; i++) {
+        ans[i] = ans[i >> 1] + (i % 2)
+    }
+    return ans
+};
+```
+#### UTF-8 编码验证
+```javascript
+/**
+ * @param {number[]} data
+ * @return {boolean}
+ */
+var validUtf8 = function(data) {
+    const one = 0
+    const two = (1 << 7) + (1 << 6)
+    const three = (1 << 5) + two
+    const four = (1 << 4) + three
+    const ch_one = (1 << 7)
+    const ch_two = three
+    const ch_three = four
+    const ch_four = four + (1 << 3)
+    let len = data.length
+    function check(cur, step) {
+        if(cur + step > len) return false
+        for(let i = 0; i < step && cur + i < len; i++) {
+            if((data[cur + i] & two) !== 128) return false
+        }
+        return true
+    }
+    for(let i = 0; i < len;) {
+        if((ch_one & data[i]) === one) {
+            i++
+        }else if((ch_two & data[i]) === two) {
+            if(check(i + 1, 1)) i += 2
+            else return false
+        }else if((ch_three & data[i]) === three) {
+            if(check(i + 1, 2)) i += 3
+            else return false
+        }else if((ch_four & data[i]) === four) {
+            if(check(i + 1, 3)) i += 4
+            else return false
+        }else {
+            return false
+        }
+    }
+    return true
+};
+```
+#### 数字范围按位与
+```javascript
+/**
+ * @param {number} m
+ * @param {number} n
+ * @return {number}
+ */
+var rangeBitwiseAnd = function(m, n) {
+    let ans = 0
+    for(let i = 30; i >= 0; i--) {
+        let t = 1 << i
+        if((t & n) ^ (m & t)) break
+        else ans += (m & t)
+    }
+    return ans
+};
+```
