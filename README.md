@@ -2740,3 +2740,96 @@ var rangeBitwiseAnd = function(m, n) {
     return ans
 };
 ```
+#### 汉明距离
+```javascript
+/**
+ * @param {number} x
+ * @param {number} y
+ * @return {number}
+ */
+var hammingDistance = function(x, y) {
+    let ans = 0
+    x = x ^ y
+    while(x) {
+        x &= (x - 1)
+        ans++
+    }
+    return ans
+};
+```
+#### 汉明距离总和
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var totalHammingDistance = function(nums) {
+    let len = nums.length
+    let ans = 0
+    for(let i = 0; i < 31; i++) {
+        let k = 1 << i
+        let s = 0
+        for(let j = 0; j < len; j++) {
+            if(k & nums[j]) s++
+        }
+        ans += (len - s) * s
+    }
+    return ans
+};
+```
+#### 数组中两个数的最大异或值
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var findMaximumXOR = function(nums) {
+    function Node(val) {
+        this.val = val
+        this.next = [null, null]
+    }
+    let len = nums.length
+    function build(root, n) {
+        let flag = 0
+        for(let i = 31; i >= 0; i--) {
+            let k = 1 << i
+            if(k & n) {
+                flag |= k
+                if(!root.next[1]) root.next[1] = new Node(flag)
+                root = root.next[1]
+            }else {
+                if(!root.next[0]) root.next[0] = new Node(flag)
+                root = root.next[0]
+            }
+        }
+    }
+    function solve(root, n) {
+        let flag = 0
+        for(let i = 31; i >= 0; i--) {
+            let k = 1 << i
+            if(k & n) {
+                if(root.next[0]) {
+                    flag |= k
+                    root = root.next[0]
+                }
+                else root = root.next[1]
+                
+            }else {
+                if(root.next[1]) {
+                    flag |= k
+                    root = root.next[1]
+                }
+                else root = root.next[0]
+            }
+        }
+        return flag
+    }
+    let rt = new Node()
+    let ans = 0
+    for(let i = 0; i < len; i++) build(rt, nums[i])
+    for(let i = 0; i < len; i++) {
+        ans = Math.max(ans, solve(rt, nums[i]))
+    }
+    return ans
+};
+```
