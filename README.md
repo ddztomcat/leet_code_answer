@@ -2833,3 +2833,128 @@ var findMaximumXOR = function(nums) {
     return ans
 };
 ```
+#### 第K个排列
+```javascript
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {string}
+ */
+var getPermutation = function(n, t) {
+    let k = []
+    let ans = ''
+    let index = 0
+    let p = [1]
+    for(let i = 0; i < n; i++) k[i] = i + 1
+    for(let i = 1; i < n; i++) p[i] = p[i - 1] * i
+    while(n) {
+        index = Math.ceil(t / p[n - 1])
+        ans += k[index - 1]
+        k.splice(index - 1, 1)
+        t -= (index - 1) * p[n - 1]
+        n--
+    }
+    return ans
+};
+```
+#### 单词搜索
+```javascript
+/**
+ * @param {character[][]} board
+ * @param {string} word
+ * @return {boolean}
+ */
+var exist = function(board, word) {
+    let n = board.length
+    let m = n > 0 ? board[0].length : 0
+    let len = word.length
+    let t = []
+    let dx = [-1, 0, 1, 0]
+    let dy = [0, 1, 0, -1]
+    let ans = false
+    for(let i = 0; i < n; i++) {
+        t[i] = []
+        for(let j = 0; j < m; j++)
+            t[i][j] = 0
+    }
+    function dfs(x, y, index) {
+         if(index === len) {
+             ans = true
+             return 
+         }
+         if(x < 0 || x >= n || y < 0 || y >= m || t[x][y] || ans) return
+         if(board[x][y] === word[index]) {
+            t[x][y] = 1
+            for(let i = 0; i < 4; i++) {
+                dfs(x + dx[i], y + dy[i], index + 1)
+            }
+            t[x][y] = 0
+         }
+    }
+    for(let i = 0; i < n; i++) {
+        for(let j = 0; j < m; j++) {
+            if(!ans && board[i][j] === word[0])
+                dfs(i, j, 0)
+        }
+    }
+    return ans
+};
+```
+#### 单词搜索2
+```javascript
+/**
+ * @param {character[][]} board
+ * @param {string[]} words
+ * @return {string[]}
+ */
+var findWords = function(board, words) {
+    let n = board.length
+    let m = n > 0 ? board[0].length : 0
+    let wslen = words.length
+    let len = 0
+    let word = ''
+    let t = []
+    let dx = [-1, 0, 1, 0]
+    let dy = [0, 1, 0, -1]
+    let ans = false
+    let res = new Set()
+    for(let i = 0; i < n; i++) {
+        t[i] = []
+        for(let j = 0; j < m; j++)
+            t[i][j] = 0
+    }
+    function dfs(x, y, index) {
+         if(index === len) {
+             ans = true
+             return 
+         }
+         if(x < 0 || x >= n || y < 0 || y >= m || t[x][y] || ans) return
+         if(board[x][y] === word[index]) {
+            t[x][y] = 1
+            for(let i = 0; i < 4; i++) {
+                 dfs(x + dx[i], y + dy[i], index + 1)
+            }
+            t[x][y] = 0
+         }
+    }
+    function solve() {
+        for(let i = 0; i < n; i++) {
+            for(let j = 0; j < m; j++) {
+                if(!ans && board[i][j] === word[0])
+                    dfs(i, j, 0)
+                if(ans) return true
+            }
+        }
+        return false
+    }
+    for(let k = 0; k < wslen; k++) {
+        len = words[k].length
+        ans = false
+        word = words[k]
+        if(res.has(word)) continue
+        if(solve()) res.add(word)
+    }
+    
+    return [...res]
+};
+```
