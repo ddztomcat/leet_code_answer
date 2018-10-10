@@ -2958,3 +2958,51 @@ var findWords = function(board, words) {
     return [...res]
 };
 ```
+### 字母大小写全排列
+```javascript
+/**
+ * @param {string} S
+ * @return {string[]}
+ */
+var letterCasePermutation = function(S) {
+    let t = []
+    let res = []
+    let ans = []
+    let len = S.length
+    let num = 0
+    for(let i = 0; i < len; i++) {
+        if((S[i] >= 'a' && S[i] <= 'z') || (S[i] >= 'A' && S[i] <= 'Z')) num++
+    }
+    function dfs(cur, flag) {
+        if(flag) t.push(1)
+        else t.push(0)
+        if(cur === num - 1) {
+            res.push(t.join(''))
+            t.pop()
+            return
+        }
+        dfs(cur + 1, true)
+        dfs(cur + 1, false)
+        t.pop()
+    }
+    num && dfs(0, true)
+    num && dfs(0, false)
+    // console.log(res)
+    for(let i = 0; i < res.length; i++) {
+        let word = res[i]
+        let p = ''
+        let ind = 0
+        for(let j = 0; j < len; j++) {
+            if((S[j] >= 'a' && S[j] <= 'z') || (S[j] >= 'A' && S[j] <= 'Z')) {
+                if(word[ind] === '1') p += S[j].toUpperCase()
+                else p += S[j].toLowerCase()
+                ind++
+            }else p += S[j] 
+        }
+        ans.push(p)
+    }
+    !num && ans.push(S)
+    // console.log(ans)
+    return ans
+};
+```
