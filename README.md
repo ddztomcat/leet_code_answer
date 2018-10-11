@@ -3006,3 +3006,69 @@ var letterCasePermutation = function(S) {
     return ans
 };
 ```
+#### 复原ip地址
+```javascript
+/**
+ * @param {string} s
+ * @return {string[]}
+ */
+var restoreIpAddresses = function(s) {
+    let len = s.length
+    let ans = []
+    let res = []
+    function dfs(cur, sum) {
+        if(sum === 4 && cur === len) {
+            res.push(ans.join('.'))
+            return
+        }
+        if(sum >= 4 || cur >= len) return
+        for(let i = 0; i < 3 && i + cur < len; i++) {
+            let n = Number(s.slice(cur, i + cur + 1))
+            if((n < 256 && n > 0 && n.toString().length === i + 1) || (n === 0 && i === 0)) {
+                ans.push(n)
+                dfs(cur + i + 1, sum + 1)
+                ans.pop()
+            }
+        }
+    }
+    dfs(0, 0)
+    return [...new Set(res)]
+};
+```
+#### 分割回文串
+```javascript
+/**
+ * @param {string} s
+ * @return {string[][]}
+ */
+var partition = function(s) {
+    let res = []
+    let len = s.length
+    let ans = []
+    function solve(p) {
+        let l = p.length
+        let mid = l << 1
+        for(let i = 0; i < mid; i++) {
+            if(p[i] !== p[l - i - 1]) return false
+        }
+        return true
+    }
+    function dfs(cur) {
+        if(cur === len) {
+            ans.push(res.join(','))
+        }
+        for(let i = 0; i + cur < len; i++) {
+            let p = s.slice(cur, cur + i + 1)
+            if(solve(p)) {
+                res.push(p)
+                dfs(cur + i + 1)
+                res.pop()
+            }
+        }
+    }
+    dfs(0)
+    let final = [...new Set(ans)]
+    return final.map(item => item.split(','))
+    
+};
+```
