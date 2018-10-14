@@ -3006,3 +3006,45 @@ var letterCasePermutation = function(S) {
     return ans
 };
 ```
+#### 二叉树的锯齿形层次遍历
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[][]}
+ */
+var zigzagLevelOrder = function(root) {
+    let p = []
+    let t = [root]
+    let flag = true
+    let ans = []
+    while(t.length) {
+         p = [].concat(t)
+         t = []
+         let q = []
+         while(p.length) {
+             let temp
+             temp = p.pop()
+             if(temp) {
+                 if(flag) {
+                    t.push(temp.left)
+                    t.push(temp.right)
+                 }else {
+                    t.push(temp.right)
+                    t.push(temp.left)
+                 }
+                 q.push(temp.val)
+             }
+        }
+        q.length > 0 && ans.push(q)
+        flag = !flag
+    }
+   return ans
+};
+```
