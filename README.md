@@ -3113,3 +3113,79 @@ var partition = function(s) {
     
 };
 ```
+#### 删除链表的倒数第N个节点
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} n
+ * @return {ListNode}
+ */
+var removeNthFromEnd = function(head, n) {
+    let ans = head
+    let t = null
+    let index = 1
+    while(head) {
+        if(index === n + 1) {
+            t = ans
+        }else if(index > n + 1) {
+            t = t.next
+        }
+        head = head.next
+        index++
+    }
+    if(t) {
+        let p = t.next
+        if(p) t.next = p.next
+    }else {
+        ans = ans.next
+    }
+   
+    return ans
+};
+```
+#### 删除链表中重复元素2
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var deleteDuplicates = function(head) {
+    let pre = null
+    let ans = null
+    function find(rt, val) {
+        while(rt) {
+            if(rt.val !== val) return rt
+            rt = rt.next
+        }
+        return rt
+    }
+    while(head) {
+        let next = head.next
+        if(next && next.val === head.val) {
+            head = find(head, head.val)
+            if(pre) {
+                pre.next = head
+            }
+        }else {
+            if(!ans) ans = head
+            pre = head
+            head = head.next
+        }
+    }
+    return ans
+};
+```
