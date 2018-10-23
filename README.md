@@ -3189,3 +3189,39 @@ var deleteDuplicates = function(head) {
     return ans
 };
 ```
+#### 字符串的排列
+```javascript
+/**
+ * @param {string} s1
+ * @param {string} s2
+ * @return {boolean}
+ */
+var checkInclusion = function(s1, s2) {
+    let len1 = s1.length
+    let len2 = s2.length
+    let tmp = {}
+    let p = {}
+    let str = 'abcdefghijklmnopqrstuvwxyz'
+    function check() {
+        for(let i = 0; i < 26; i++) {
+           if(tmp[str[i]] !== p[str[i]]) return false
+        }
+        return true
+    }
+    for(let i = 0; i < 26; i++) {
+       tmp[str[i]] = 0
+       p[str[i]] = 0
+    }
+    for(let i = 0; i < len1; i++) tmp[s1[i]]++
+    for(let i = 0; i < len2 && i < len1; i++) p[s2[i]]++
+    if(check()) return true
+    let pre = 0
+    for(let i = len1; i < len2; i++) {
+        p[s2[pre]]--
+        p[s2[i]]++
+        if(check()) return true
+        pre++
+    }
+    return false
+};
+```
