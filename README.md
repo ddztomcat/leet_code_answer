@@ -3225,3 +3225,52 @@ var checkInclusion = function(s1, s2) {
     return false
 };
 ```
+#### 环形链表
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var detectCycle = function(head) {
+    let slow = head
+    let fast = head
+    let len = 0
+    let flag = false
+    // 快慢指针找环
+    while(fast && fast.next) {
+        slow = slow.next
+        fast = fast.next.next
+        if(slow === fast) {
+            flag = true
+            break
+        }
+    }
+    if(flag) {
+        // 计算环的长度
+        while(slow) {
+            len++
+            slow = slow.next
+            if(slow === fast) break
+        }
+        let k = head
+        // 提前走len环长
+        while(head && len) {
+            len--
+            head = head.next
+        }
+        while(head !== k) {
+            head = head.next
+            k = k.next
+        }
+    }
+    return flag ? head : null
+};
+```
