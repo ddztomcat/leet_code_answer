@@ -3274,3 +3274,29 @@ var detectCycle = function(head) {
     return flag ? head : null
 };
 ```
+#### 寻找重复数
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var findDuplicate = function(nums) {
+    let len = nums.length
+    let mid
+    let start = 1
+    let end = len - 1
+    while(start < end) {
+        let num = 0
+        mid = (start + end) >> 1
+        for(let i = 0; i < len; i++) {
+            if(nums[i] <= mid) num++
+        }
+        if(num > mid) {
+            end = mid
+        }else {
+            start = mid + 1
+        }
+    }
+    return start
+};
+```
