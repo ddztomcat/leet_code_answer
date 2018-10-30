@@ -3300,3 +3300,36 @@ var findDuplicate = function(nums) {
     return start
 };
 ```
+#### 乘积小于K 的子数组
+```javascript
+// 思路：维护一个滑动数组 end尽可能的往右移，当end不能右移时，考虑移动start。初始化 start end = 0，end 每右移一步，他对ans的贡献值就是当前数组的长度。
+//举例：[1,2] => [1,2,3] 时3对当前结果的贡献值实际就是以3结尾的子数组的个数：[1,2,3] [2,3] [3]
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var numSubarrayProductLessThanK = function(nums, k) {
+    let start = 0
+    let end = 0
+    let count = 1
+    let ans = 0
+    let len = nums.length
+    while(end < len) {
+        let p = count * nums[end]
+        if(nums[end] >= k) {
+            start = ++end
+            continue
+        }
+        if(p >= k) {
+            count /= nums[start]
+            start++
+        }else {
+            count = p
+            ans += (end - start + 1)
+            end++
+        }
+    }
+    return ans
+};
+```
