@@ -3333,3 +3333,63 @@ var numSubarrayProductLessThanK = function(nums, k) {
     return ans
 };
 ```
+#### 长度最小的子数组
+```javascript
+/**
+ * @param {number} s
+ * @param {number[]} nums
+ * @return {number}
+ */
+var minSubArrayLen = function(s, nums) {
+   let start = 0
+   let end = 0
+   let count = 0
+   let ans = 1 << 30
+   let len = nums.length
+   while(end < len) {
+       while(count < s && end < len) {
+           count += nums[end]
+           end++
+       }
+       if(count >= s) ans = Math.min(ans, end - start)
+       while(count >= s) {
+           count -= nums[start]
+           ans = Math.min(ans, end - start)
+           start++
+       }
+   }
+    return ans === (1 << 30) ? 0 : ans
+};
+```
+#### 数组中的最长山脉
+```javascript
+/**
+ * @param {number[]} A
+ * @return {number}
+ */
+var longestMountain = function(A) {
+    let len = A.length
+    let start = 0
+    let p = 0
+    let ans = 0
+    while(start < len) {
+        p = start
+        let fb = false
+        let fa = false
+        while(A[p] < A[p + 1] && p + 1 < len) {
+            p++
+            fa = true
+        }
+        while(A[p] > A[p + 1] && p + 1 < len) {
+            p++
+            fb = true
+        }
+        if(p - start >= 2 && fa && fb) {
+            ans = Math.max(ans, p - start + 1)
+        }
+        if(p - start < 1) start = p + 1
+        else start = p
+    }
+    return ans
+};
+```
