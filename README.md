@@ -3393,3 +3393,40 @@ var longestMountain = function(A) {
     return ans
 };
 ```
+#### 三数之和
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var threeSum = function(nums) {
+    nums.sort((a, b) => a - b)
+    let len = nums.length
+    let start = 0
+    let end = 0
+    let p = 0
+    let ans = []
+    let set = new Set()
+    if(len > 2 && nums[0] === 0 && nums[len - 1] === 0) return [[0, 0, 0]]
+    for(let i = 0; i < len; i++) {
+        start = i - 1
+        end = i + 1
+        while(start >= 0 && end < len) {
+            p = nums[start] + nums[i] + nums[end]
+            if(p === 0) {
+                let t = [nums[start], nums[i], nums[end]].join(',')
+                if(!set.has(t)) {
+                    ans.push(t.split(',').map(a => Number(a)))
+                    set.add(t)
+                }
+                start--
+            }else if(p < 0) {
+                end++
+            }else {
+                start--
+            }
+        }
+    }
+    return ans
+};
+```
