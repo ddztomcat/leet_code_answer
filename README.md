@@ -3467,3 +3467,50 @@ var threeSumClosest = function(nums, target) {
     return ans
 };
 ```
+#### 四数之和
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[][]}
+ */
+var fourSum = function(nums, target) {
+    nums.sort((a, b) => a - b)
+    let len = nums.length
+    let start = 0
+    let end = 0
+    let p = 0
+    let ans = []
+    let set = new Set()
+    let m = 0
+    for(let k = 0; k < len; k++) {
+        m = target - nums[k]
+        for(let i = 0; i < len; i++) {
+            if(i === k) continue
+            start = i - 1
+            end = i + 1
+            if(start === k) start--
+            if(end === k) end++
+            while(start >= 0 && end < len) {
+                p = nums[start] + nums[i] + nums[end]
+                if(p === m) {
+                    let t = [nums[start], nums[i], nums[end], nums[k]].sort((a, b) => a - b).join(',')
+                    if(!set.has(t)) {
+                        ans.push(t.split(',').map(a => Number(a)))
+                        set.add(t)
+                    }
+                    start--
+                }else if(p < m) {
+                    end++
+                }else {
+                    start--
+                }
+                if(start === k) start--
+                if(end === k) end++
+            }
+        }
+    }
+    
+    return ans
+};
+```
