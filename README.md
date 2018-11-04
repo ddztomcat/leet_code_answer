@@ -3430,3 +3430,40 @@ var threeSum = function(nums) {
     return ans
 };
 ```
+#### 最接近的三数之和
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var threeSumClosest = function(nums, target) {
+    nums.sort((a, b) => a - b)
+    let len = nums.length
+    let start = 0
+    let end = 0
+    let p = 0
+    let k = 1 << 30
+    let ans = 0
+    for(let i = 0; i < len; i++) {
+        start = i - 1
+        end = i + 1
+        while(start >= 0 && end < len) {
+            p = nums[start] + nums[i] + nums[end]
+            let o = Math.abs(p - target)
+            if(o < k) {
+                ans = p
+                k = o
+            }
+            if(p === target) {
+                return ans
+            }else if(p < target) {
+                end++
+            }else {
+                start--
+            }
+        }
+    }
+    return ans
+};
+```
