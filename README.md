@@ -3514,3 +3514,78 @@ var fourSum = function(nums, target) {
     return ans
 };
 ```
+#### 缺失的正整数
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var firstMissingPositive = function(nums) {
+    let len = nums.length
+    let n = 0
+    let t = 0
+    for(let i = 0; i < len; i++) {
+        while(nums[i] !== i + 1 && nums[i] > 0) {
+            n = nums[i]
+            if(n > len) {
+                t = -1
+            }else {
+                if(nums[n - 1] === n) {
+                    t = -1
+                }else {
+                    t = nums[n - 1]
+                    nums[n - 1] = n
+                }
+            }
+            nums[i] = t
+        }
+    }
+    for(let i = 0; i < len; i++) {
+        if(nums[i] <= 0 ) return i + 1
+    }
+    return len + 1
+};
+```
+#### 二叉树的右视图
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var rightSideView = function(root) {
+    let sa = [], sb = [], ans = [], t = null
+    if(root) {
+        sa.push(root)
+        ans.push(root.val)
+    }
+    while(sa.length > 0 || sb.length > 0) {
+        if(sa.length <= 0) {
+            sa = sb
+            sb = []
+        }
+        t = null
+        while(sa.length > 0) {
+            let p = sa.shift()
+            if(p.left) {
+                t = p.left
+                sb.push(t)
+            }
+            if(p.right) {
+                t = p.right
+                sb.push(t)
+            }
+        }
+        if(t) {
+            ans.push(t.val)
+        }
+    }
+    return ans
+};
+```
