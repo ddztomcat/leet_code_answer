@@ -3589,3 +3589,29 @@ var rightSideView = function(root) {
     return ans
 };
 ```
+#### 乘积最大的子序列
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxProduct = function(nums) {
+    let mn = 0, mx = 0, ans = 0
+    if(nums.length) {
+        ans = mn = mx = nums[0]
+    }
+    for(let i = 1, len = nums.length; i < len; i++) {
+        if(nums[i] < 0) {
+            ans = Math.max(ans, nums[i] * mn, nums[i])
+        } else if (nums[i] === 0) {
+            ans = Math.max(ans, 0)
+        } else {
+            ans = Math.max(ans, nums[i] * mx, nums[i])
+        }
+        let a = mx, b = mn
+        mx = Math.max(a * nums[i], nums[i], b * nums[i])
+        mn = Math.min(b * nums[i], nums[i], a * nums[i])
+    }
+    return Math.max(ans, mx, mn)
+};
+```
