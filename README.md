@@ -3616,7 +3616,7 @@ var maxProduct = function(nums) {
 };
 ```
 #### 平衡二叉树
-```
+```js
 var isBalanced = function(root) {
     let flag = false
     function getTreeHeight(rt) {
@@ -3634,5 +3634,49 @@ var isBalanced = function(root) {
     }
     getTreeHeight(root)
     return !flag
+};
+```
+#### 四数相加||
+```js
+/**
+ * @param {number[]} A
+ * @param {number[]} B
+ * @param {number[]} C
+ * @param {number[]} D
+ * @return {number}
+ */
+var fourSumCount = function(A, B, C, D) {
+    let a = new Map(), len = A.length, t = 0, p = 0, b = new Map(), ans = 0
+    for(let i = 0; i < len; i++) {
+        for(let j = 0; j < len; j++) {
+            t = A[i] + B[j]
+            p = a.get(t)
+            if(p) {
+                a.set(t, p + 1)
+            }else {
+                a.set(t, 1)
+            }
+        }
+    }
+    for(let i = 0; i < len; i++) {
+        for(let j = 0; j < len; j++) {
+            t = C[i] + D[j]
+            p = b.get(t)
+            if(p) {
+                b.set(t, p + 1)
+            }else {
+                b.set(t, 1)
+            }
+        }
+    }
+    
+    for(let [key, value] of a.entries()) {
+        t = 0 - key
+        p = b.get(t)
+        if(p) {
+            ans += value * p
+        }
+    }
+    return ans
 };
 ```
