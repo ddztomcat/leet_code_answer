@@ -86,41 +86,7 @@ var lengthOfLongestSubstring = function(s) {
     
 };
 ```
-####
-```javascript
-/**
- * @param {number[]} nums1
- * @param {number[]} nums2
- * @return {number}
- */
-var findMedianSortedArrays = function(nums1, nums2) {
-    var start1 = 0;
-    var start2 = 0;
-    var mid1 = 0;
-    var mid2 = 0;
-    var end1 = nums1.length - 1;
-    var end2 = nums2.length - 1;
-    var m1 = 0;
-    var m2 = 0;
-    var even = (end1 + end2) % 2 === 0;
-    while(start1 < end1 || start2 < end2) {
-        mid1 = (start1 + end1) >> 1;
-        mid2 = (start2 + end2) >> 1;
-        m1 = nums1[mid1];
-        m2 = nums2[mid2];
-        if(m1 < m2) {
-            start1 = mid1 + 1;
-            end2 = mid2;
-        }else if(m1 > m2) {
-            start2 = mid2 + 1;
-            end1 = mid1;
-        }else {
-            return m1;
-        }
-    }
-    
-};
-```
+
 #### 5、最长回文串
 ```javascript
 /**
