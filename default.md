@@ -1,4 +1,4 @@
-#### 2、两数相加
+#### 两数相加
 ```javascript
 /**
  * Definition for singly-linked list.
@@ -58,7 +58,7 @@ var addTwoNumbers = function(l1, l2) {
     return ans;
 };
 ```
-#### 3、无重复字符的最长子串 
+#### 无重复字符的最长子串 
 ```javascript
 /**
  * @param {string} s
@@ -87,7 +87,7 @@ var lengthOfLongestSubstring = function(s) {
 };
 ```
 
-#### 5、最长回文串
+#### 最长回文串
 ```javascript
 /**
  * @param {string} s
@@ -113,7 +113,7 @@ var longestPalindrome = function(s) {
     return '';
 };
 ```
-#### 8、字符串转整数
+#### 字符串转整数
 ```javascript
 /**
  * @param {string} str
@@ -147,7 +147,7 @@ var myAtoi = function(str) {
     
 };
 ```
-#### 10、正则表达式匹配
+#### 正则表达式匹配
 ```javascript
 /**
  * @param {string} s
@@ -179,7 +179,7 @@ var isMatch = function(s, p) {
     return Match(0,0);
 };
 ```
-#### 11、盛最多水的容器
+#### 盛最多水的容器
 ```javascript
 /**
  * @param {number[]} height
@@ -196,7 +196,7 @@ var maxArea = function(height) {
     return ans;
 };
 ```
-#### 51、N皇后问题
+#### N皇后问题
 ```javascript
 /**
  * @param {number} n
@@ -257,7 +257,7 @@ var solveNQueens = function(n) {
     return ans;
 };
 ```
-#### 64、最小路径和
+#### 最小路径和
 ```javascript
 /**
  * @param {number[][]} grid
@@ -282,7 +282,7 @@ var minPathSum = function(grid) {
     return grid[m - 1][n - 1];
 };
 ```
-#### 46、全排列
+#### 全排列
 ```javascript
 /**
  * @param {number[]} nums
@@ -311,7 +311,7 @@ var permute = function(nums) {
     return ans;
 };
 ```
-#### 47、全排列2
+#### 全排列2
 ```javascript
 /**
  * @param {number[]} nums
@@ -358,7 +358,7 @@ var permuteUnique = function(nums) {
     return final;
 };
 ```
-#### 43、字符串相乘
+#### 字符串相乘
 ```javascript
 /**
  * @param {string} num1
@@ -3602,7 +3602,7 @@ var isBalanced = function(root) {
     return !flag
 };
 ```
-#### 四数相加||
+#### 四数相加
 ```js
 /**
  * @param {number[]} A
