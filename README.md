@@ -13,7 +13,7 @@
 |不同路径2|[地址](#不同路径2)|最小花费爬楼梯|[地址](#最小花费爬楼梯)|
 |杨辉三角2|[地址](#杨辉三角2)|杨辉三角|[地址](#杨辉三角)|
 |最长上升子序列|[地址](#最长上升子序列)|最长递增子序列的个数|[地址](#最长递增子序列的个数)|
-|区间和检索|[地址](#区间和检索)|####|[地址](#####)|
+|区间和检索|[地址](#区间和检索)|打家劫舍|[地址](#打家劫舍)|
 |打家劫舍2|[地址](#打家劫舍2)|打家劫舍3|[地址](#打家劫舍3)|
 |买股票最佳时机|[地址](#买股票最佳时机)|解码方法|[地址](#解码方法)|
 |三角形最小路径和|[地址](#三角形最小路径和)|丑数2|[地址](#丑数2)|
@@ -1037,15 +1037,9 @@ NumArray.createNew = function(nums) {
 NumArray.prototype.sumRange = function(i, j) {
     return i === 0 ? this.ans[j] : this.ans[j] - this.ans[i - 1];
 };
-
-/** 
- * Your NumArray object will be instantiated and called as such:
- * var obj = Object.create(NumArray).createNew(nums)
- * var param_1 = obj.sumRange(i,j)
- */
- ```
- #### 打家劫舍
- ```javascript
+```
+#### 打家劫舍
+```javascript
  /**
  * @param {number[]} nums
  * @return {number}

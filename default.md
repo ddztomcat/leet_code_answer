@@ -982,15 +982,9 @@ NumArray.createNew = function(nums) {
 NumArray.prototype.sumRange = function(i, j) {
     return i === 0 ? this.ans[j] : this.ans[j] - this.ans[i - 1];
 };
-
-/** 
- * Your NumArray object will be instantiated and called as such:
- * var obj = Object.create(NumArray).createNew(nums)
- * var param_1 = obj.sumRange(i,j)
- */
- ```
- #### 打家劫舍
- ```javascript
+```
+#### 打家劫舍
+```javascript
  /**
  * @param {number[]} nums
  * @return {number}
