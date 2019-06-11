@@ -52,7 +52,7 @@
 |最接近的三数之和|[地址](#最接近的三数之和)|四数之和|[地址](#四数之和)|
 |缺失的正整数|[地址](#缺失的正整数)|二叉树的右视图|[地址](#二叉树的右视图)|
 |乘积最大的子序列|[地址](#乘积最大的子序列)|平衡二叉树|[地址](#平衡二叉树)|
-|四数相加|[地址](#四数相加)|-|-|
+|四数相加|[地址](#四数相加)|删除排序数组重复项2|[地址](#删除排序数组重复项2)|
 #### 两数相加
 ```javascript
 /**
@@ -3693,5 +3693,30 @@ var fourSumCount = function(A, B, C, D) {
         }
     }
     return ans
+};
+```
+#### 删除排序数组重复项2
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var removeDuplicates = function(nums) {
+    let k = nums[0]
+    let step = 1
+    for(let i = 1; i < nums.length; i++) {
+        if(nums[i] === k) {
+           step++
+        }else {
+           k = nums[i]
+           step = 1 
+        }
+        if(step >= 3) {
+            nums.splice(i, 1)
+            i--
+            step--
+        }
+    }
+    return nums.length
 };
 ```
