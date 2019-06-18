@@ -53,6 +53,7 @@
 |缺失的正整数|[地址](#缺失的正整数)|二叉树的右视图|[地址](#二叉树的右视图)|
 |乘积最大的子序列|[地址](#乘积最大的子序列)|平衡二叉树|[地址](#平衡二叉树)|
 |四数相加|[地址](#四数相加)|删除排序数组重复项2|[地址](#删除排序数组重复项2)|
+|寻找有序数组中的中位数|[地址](#寻找有序数组中的中位数)|-|-|
 #### 两数相加
 ```javascript
 /**
@@ -3718,5 +3719,41 @@ var removeDuplicates = function(nums) {
         }
     }
     return nums.length
+};
+```
+#### 寻找有序数组中的中位数
+```js
+/**
+ * O(n) 两个数组有序，只需要一次遍历即可 根据总长度分奇数偶数讨论
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number}
+ */
+var findMedianSortedArrays = function(nums1, nums2) {
+    let len = nums1.length + nums2.length
+    let even = len % 2 === 0
+    let mid = len >> 1
+    let start1 = 0, start2 = 0, last = 0
+    let arr = []
+    while (start1 < nums1.length && start2 < nums2.length) {
+        if (nums1[start1] <= nums2[start2]) {
+            arr.push(nums1[start1])
+            start1++
+        } else {
+            arr.push(nums2[start2])
+            start2++
+        }
+    }
+    if (start1 >= nums1.length) arr = arr.concat(nums2.slice(start2))
+    if (start2 >= nums2.length) arr = arr.concat(nums1.slice(start1))
+    for (let j = 0; j < arr.length; j++) {
+        if (even && j === mid) {
+            return (last + arr[j]) / 2
+        } else if (!even && j === mid) {
+            return arr[j]
+        }
+        last = arr[j]
+    }
+    return 0
 };
 ```

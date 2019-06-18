@@ -12,7 +12,7 @@ fs.readFile('./default.md', 'utf8', function(err, str) {
     data += `|${t[1]}|[地址](#${t[1]})|${p[1]}|[地址](#${p[1]})|\n`
   }
   for(; i < len; i++) {
-    let t = arr[i].split(' ')
+    let t = arr[i].split(' ').map(item => item.replace(/\s/g,''))
     data += `|${t[1]}|[地址](#${t[1]})|-|-|\n`
   }
   console.log(len)
