@@ -53,7 +53,8 @@
 |缺失的正整数|[地址](#缺失的正整数)|二叉树的右视图|[地址](#二叉树的右视图)|
 |乘积最大的子序列|[地址](#乘积最大的子序列)|平衡二叉树|[地址](#平衡二叉树)|
 |四数相加|[地址](#四数相加)|删除排序数组重复项2|[地址](#删除排序数组重复项2)|
-|寻找有序数组中的中位数|[地址](#寻找有序数组中的中位数)|-|-|
+|寻找有序数组中的中位数|[地址](#寻找有序数组中的中位数)|最小覆盖字串|[地址](#最小覆盖字串)|
+|镜像二叉树|[地址](#镜像二叉树)|-|-|
 #### 两数相加
 ```javascript
 /**
@@ -3755,5 +3756,96 @@ var findMedianSortedArrays = function(nums1, nums2) {
         last = arr[j]
     }
     return 0
+};
+```
+
+#### 最小覆盖字串
+```js
+/**
+ * 滑动窗口 头尾指针交替移动 目标就是寻找以尾指针字符结尾的情况下，满足覆盖的最小字串
+ * @param {string} s
+ * @param {string} t
+ * @return {string}
+ */
+var minWindow = function(s, t) {
+    let mp = new Map(), a, b = 0, start, end, min = Infinity, ans = '', kmp = new Map()
+    function comput() {
+        while (start <= end) {
+            if (~t.indexOf(s[start])) {
+                a = mp.get(s[start])
+                if (a > kmp.get(s[start])) {
+                    mp.set(s[start], a - 1)
+                    start++
+                } else {
+                    if (min > end - start + 1) {
+                        console.log(start, end, '----')
+                        ans = s.slice(start, end + 1)
+                        min = end - start + 1
+                    }
+                    break
+                }
+            } else {
+                start++
+            }
+        }
+    }
+    for (let i = 0; i < t.length; i++) {
+        if (kmp.has(t[i])) {
+            kmp.set(t[i], kmp.get(t[i]) + 1)
+        } else {
+            kmp.set(t[i], 1)
+        }
+    }
+    for (let i = 0; i < s.length; i++) {
+        if (~t.indexOf(s[i])) {
+            if (mp.has(s[i])) {
+                a = mp.get(s[i])
+                mp.set(s[i], a + 1)
+            } else {
+                mp.set(s[i], 1)
+            }
+            a = mp.get(s[i])
+            if(a === kmp.get(s[i])) b += a
+            if (b === t.length) {
+                start = 0
+                end = i
+                comput()
+                end++
+                break
+            }
+        }
+    }
+    while (end < s.length) {
+        if (~t.indexOf(s[end])) {
+            a = mp.get(s[end])
+            mp.set(s[end], a + 1)
+            comput()
+        }
+        end++
+    }
+    return ans
+};
+```
+
+#### 镜像二叉树
+```js
+/**
+ * 左子树的右子树 跟 右子树的左子树镜像 递归
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isSymmetric = function(root) {
+    function mirror(tl, tr) {
+        let a = (!tl && !tr) || (tr && tl && tr.val === tl.val && mirror(tl.left, tr.right) && mirror(tl.right, tr.left))
+        return !!a
+    }
+    return root && mirror(root.left, root.right)
 };
 ```
