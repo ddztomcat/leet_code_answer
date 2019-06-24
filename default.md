@@ -3792,3 +3792,53 @@ var isSymmetric = function(root) {
     return root && mirror(root.left, root.right)
 };
 ```
+
+#### 颜色分类
+```js
+/**
+ * 三指针问题
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var sortColors = function(nums) {
+    let start = 0, end = nums.length - 1, cur = 0
+    while(cur <= end) {
+        if(nums[cur] === 0) {
+            nums[cur] = nums[start]
+            nums[start] = 0
+            start++
+            cur++
+        }else if(nums[cur] === 1) {
+            cur++
+        }else {
+            nums[cur] = nums[end]
+            nums[end] = 2
+            end--
+        }
+        // console.log(nums)
+    }
+};
+```
+
+#### 最长有效括号
+```js
+/**
+ * 核心思路 记录以当前i字符为结尾时，此时有效括号的长度li，max(li)i=0到len-1
+ * @param {string} s
+ * @return {number}
+ */
+var longestValidParentheses = function(s) {
+    let st = [-1], c, max = 0
+    for(let i = 0; i < s.length; i++) {
+        if(s[i] === ')') {
+            st.pop()
+            c = st.length
+            if(c < 1) st.push(i)
+            else max = Math.max(max, i - st[c - 1])
+        }else {
+            st.push(i)
+        }
+    }
+    return max
+};
+```
