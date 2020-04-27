@@ -55,7 +55,7 @@
 |四数相加|[地址](#四数相加)|删除排序数组重复项2|[地址](#删除排序数组重复项2)|
 |寻找有序数组中的中位数|[地址](#寻找有序数组中的中位数)|最小覆盖字串|[地址](#最小覆盖字串)|
 |镜像二叉树|[地址](#镜像二叉树)|颜色分类|[地址](#颜色分类)|
-|最长有效括号|[地址](#最长有效括号)|-|-|
+|最长有效括号|[地址](#最长有效括号)|括号生成|[地址](#括号生成)|
 #### 两数相加
 ```javascript
 /**
@@ -3899,4 +3899,32 @@ var longestValidParentheses = function(s) {
     }
     return max
 };
+```
+#### 括号生成
+```js
+/**
+ * @param {number} n
+ * @return {string[]}
+ */
+var generateParenthesis = function(n) {
+    var res = [];
+    function dfs(now, left, ans, len) {
+        // console.log(ans)
+        if(len > n * 2) return;
+        // console.log(ans)
+        if(left < 1 && now == n) {
+            res.push(ans);
+        }
+        if(now < n) {
+            dfs(now + 1, left + 1, ans + '(', len + 1);   
+        }
+        if(left > 0) {
+            dfs(now, left - 1, ans + ')', len + 1);
+        }
+    }
+    dfs(1, 1, '(', 1);
+    return res;
+};
+// a = generateParenthesis(3)
+// console.log(a);
 ```

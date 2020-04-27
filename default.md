@@ -3842,3 +3842,31 @@ var longestValidParentheses = function(s) {
     return max
 };
 ```
+#### 括号生成
+```js
+/**
+ * @param {number} n
+ * @return {string[]}
+ */
+var generateParenthesis = function(n) {
+    var res = [];
+    function dfs(now, left, ans, len) {
+        // console.log(ans)
+        if(len > n * 2) return;
+        // console.log(ans)
+        if(left < 1 && now == n) {
+            res.push(ans);
+        }
+        if(now < n) {
+            dfs(now + 1, left + 1, ans + '(', len + 1);   
+        }
+        if(left > 0) {
+            dfs(now, left - 1, ans + ')', len + 1);
+        }
+    }
+    dfs(1, 1, '(', 1);
+    return res;
+};
+// a = generateParenthesis(3)
+// console.log(a);
+```
