@@ -2554,6 +2554,16 @@ var numRescueBoats = function(people, limit) {
 ```
 #### 只出现1次的数字1
 ```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var singleNumber = function(nums) {
+    let t = 0
+    let len = nums.length
+    for(let i = 0; i < len; i++) t ^= nums[i]
+    return t
+};
 ```
 #### 只出现1次的数字2
 ```javascript
