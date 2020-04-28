@@ -3870,3 +3870,54 @@ var generateParenthesis = function(n) {
 // a = generateParenthesis(3)
 // console.log(a);
 ```
+#### 下一个排列
+```js
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var nextPermutation = function(nums) {
+    let len = nums.length;
+    let tmp;
+    for(let i = len - 1; i >= 0; i--) {
+        if(i > 0 && nums[i] > nums[i - 1]) {
+            let ind = find(i, len, nums, nums[i - 1], nums[i]);
+            tmp = nums[i - 1];
+            nums[i - 1] = nums[ind];
+            nums[ind] = tmp;
+            sort(i, len, nums);
+            return;
+        }
+    }
+    sort(0, len, nums);
+};
+function find(start, end, arr, lt, rt) {
+    let ans = rt;
+    let ind = start;
+    for(let i = start; i < end; i++) {
+        if(arr[i] > lt && arr[i] < ans) {
+            ans = arr[i];
+            ind = i;
+        }
+    }
+    return ind;
+}
+function sort(start, end, arr) {
+    for(let i = start; i < end; i++) {
+        let tmp;
+        for(let j = i + 1; j < end; j++) {
+            if(arr[j] < arr[i]) {
+                tmp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = tmp;
+            }
+        }
+    }
+}
+// a = [1, 5, 4, 3,2]
+// b = [1, 2, 5, 4, 3, 1]
+// nextPermutation(a)
+// nextPermutation(b)
+// console.log(a)
+// console.log(b)
+```
