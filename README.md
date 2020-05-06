@@ -56,7 +56,7 @@
 |寻找有序数组中的中位数|[地址](#寻找有序数组中的中位数)|最小覆盖字串|[地址](#最小覆盖字串)|
 |镜像二叉树|[地址](#镜像二叉树)|颜色分类|[地址](#颜色分类)|
 |最长有效括号|[地址](#最长有效括号)|括号生成|[地址](#括号生成)|
-|下一个排列|[地址](#下一个排列)|-|-|
+|下一个排列|[地址](#下一个排列)|所有可能的满二叉树|[地址](#所有可能的满二叉树)|
 #### 两数相加
 ```javascript
 /**
@@ -3989,4 +3989,40 @@ function sort(start, end, arr) {
 // nextPermutation(b)
 // console.log(a)
 // console.log(b)
+```
+#### 所有可能的满二叉树
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {number} N
+ * @return {TreeNode[]}
+ */
+var allPossibleFBT = function(N) {
+ if(N % 2 == 0) return [];
+    if(N == 1) return [new TreeNode(0)];
+    let ans = [];
+    let left = 1;
+    let right = N - 2;
+    while(right > 0) {
+        let leftList = allPossibleFBT(left);
+        let rightList = allPossibleFBT(right);
+        for(let i = 0; i< leftList.length; i++) {
+            for(let j = 0; j < rightList.length; j++) {
+                let root = new TreeNode(0);
+                root.left = leftList[i];
+                root.right = rightList[j];
+                ans.push(root);
+            }
+        }
+        left+=2;
+        right-=2;
+    }
+    return ans;
+};
 ```

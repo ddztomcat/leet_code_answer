@@ -3931,3 +3931,39 @@ function sort(start, end, arr) {
 // console.log(a)
 // console.log(b)
 ```
+#### 所有可能的满二叉树
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {number} N
+ * @return {TreeNode[]}
+ */
+var allPossibleFBT = function(N) {
+ if(N % 2 == 0) return [];
+    if(N == 1) return [new TreeNode(0)];
+    let ans = [];
+    let left = 1;
+    let right = N - 2;
+    while(right > 0) {
+        let leftList = allPossibleFBT(left);
+        let rightList = allPossibleFBT(right);
+        for(let i = 0; i< leftList.length; i++) {
+            for(let j = 0; j < rightList.length; j++) {
+                let root = new TreeNode(0);
+                root.left = leftList[i];
+                root.right = rightList[j];
+                ans.push(root);
+            }
+        }
+        left+=2;
+        right-=2;
+    }
+    return ans;
+};
+```
