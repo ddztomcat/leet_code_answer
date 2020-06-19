@@ -57,6 +57,7 @@
 |镜像二叉树|[地址](#镜像二叉树)|颜色分类|[地址](#颜色分类)|
 |最长有效括号|[地址](#最长有效括号)|括号生成|[地址](#括号生成)|
 |下一个排列|[地址](#下一个排列)|所有可能的满二叉树|[地址](#所有可能的满二叉树)|
+|字符串轮转|[地址](#字符串轮转)|-|-|
 #### 两数相加
 ```javascript
 /**
@@ -4024,5 +4025,16 @@ var allPossibleFBT = function(N) {
         right-=2;
     }
     return ans;
+};
+```
+#### 字符串轮转
+```js
+/**
+ * @param {string} s1
+ * @param {string} s2
+ * @return {boolean}
+ */
+var isFlipedString = function(s1, s2) {
+    return s1.length == s2.length && (s1 + s1).includes(s2);
 };
 ```
