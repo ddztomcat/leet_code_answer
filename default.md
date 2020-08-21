@@ -3978,3 +3978,28 @@ var isFlipedString = function(s1, s2) {
     return s1.length == s2.length && (s1 + s1).includes(s2);
 };
 ```
+#### 最长重复子数组
+```js
+/**
+ * @param {number[]} A
+ * @param {number[]} B
+ * @return {number}
+ */
+var findLength = function(A, B) {
+    let len = 0;
+    let arr = [];
+    for(let i = 0; i < A.length; i++) {
+        arr[i] = [];
+        for(let j = 0; j < B.length; j++) {
+            arr[i][j] = 0;
+            if(A[i] == B[j]) {
+                arr[i][j] = (!i || !j ? 0 : arr[i-1][j-1]) + 1;
+            }else {
+                arr[i][j] = 0;
+            }
+            len = Math.max(len, arr[i][j]);
+        }
+    }
+    return len;
+};
+```

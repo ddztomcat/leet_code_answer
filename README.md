@@ -57,7 +57,7 @@
 |镜像二叉树|[地址](#镜像二叉树)|颜色分类|[地址](#颜色分类)|
 |最长有效括号|[地址](#最长有效括号)|括号生成|[地址](#括号生成)|
 |下一个排列|[地址](#下一个排列)|所有可能的满二叉树|[地址](#所有可能的满二叉树)|
-|字符串轮转|[地址](#字符串轮转)|-|-|
+|字符串轮转|[地址](#字符串轮转)|最长重复子数组|[地址](#最长重复子数组)|
 #### 两数相加
 ```javascript
 /**
@@ -4036,5 +4036,30 @@ var allPossibleFBT = function(N) {
  */
 var isFlipedString = function(s1, s2) {
     return s1.length == s2.length && (s1 + s1).includes(s2);
+};
+```
+#### 最长重复子数组
+```js
+/**
+ * @param {number[]} A
+ * @param {number[]} B
+ * @return {number}
+ */
+var findLength = function(A, B) {
+    let len = 0;
+    let arr = [];
+    for(let i = 0; i < A.length; i++) {
+        arr[i] = [];
+        for(let j = 0; j < B.length; j++) {
+            arr[i][j] = 0;
+            if(A[i] == B[j]) {
+                arr[i][j] = (!i || !j ? 0 : arr[i-1][j-1]) + 1;
+            }else {
+                arr[i][j] = 0;
+            }
+            len = Math.max(len, arr[i][j]);
+        }
+    }
+    return len;
 };
 ```
