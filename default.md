@@ -4003,3 +4003,32 @@ var findLength = function(A, B) {
     return len;
 };
 ```
+#### 在排序数组中查找元素的第一个和最后一个位置
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function(nums, target) {
+    function erFen(start, end) {
+        if(nums[start] === target && nums[end] === target) {
+            return [start, end]
+        } else if(nums[start] > target || nums[end] < target) {
+            return [-1, -1]
+        } else {
+            let mid = (start + end) >> 1
+            if(nums[mid] < target) {
+                return erFen(mid + 1, end)
+            } else if(nums[mid] > target) {
+                return erFen(start, mid - 1)
+            } else {
+            let a = erFen(start, mid)
+            let b = erFen(mid + 1, end)
+            return a[0] < 0 ? b : b[0] < 0 ? a : [a[0], b[1]]
+            }
+        }
+    }
+    return  nums.length ? erFen(0, nums.length - 1) : [-1, -1]
+};
+```
